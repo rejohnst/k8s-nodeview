@@ -11,7 +11,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const VERSION="2020-06-16"
+const kcVersion="2020-07-26"
 
 type kubeClient struct {
 	kcClientset		*kubernetes.Clientset
@@ -124,8 +124,10 @@ func main() {
 	var kubeconfig, cmd, nodename, podname *string
 	var verbose, version *bool
 
+	defKubeconfig := fmt.Sprintf("%s/.kube/config", os.Getenv("HOME"))
+
 	// Parse the command line arguments
-	kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	kubeconfig = flag.String("kubeconfig", defKubeconfig, "absolute path to the kubeconfig file")
 	cmd = flag.String("command", "", "<list|findpod>")
 	nodename = flag.String("nodename", "", "name of node to print info for (default=all nodes)")
 	podname = flag.String("podname", "", "show info for node which hosts specified pod")
@@ -134,7 +136,7 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("%s\n", VERSION)
+		fmt.Printf("%s\n", kcVersion)
 		os.Exit(0)
 	}
 
