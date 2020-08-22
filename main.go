@@ -11,7 +11,10 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const kcVersion="2020-07-26"
+var (
+	BuildTime   string
+	GitRevision string
+)
 
 type kubeClient struct {
 	kcClientset		*kubernetes.Clientset
@@ -136,7 +139,8 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("%s\n", kcVersion)
+		fmt.Printf("Git Revision: %s\n", GitRevision)
+		fmt.Printf("Build Time:   %s\n", BuildTime)
 		os.Exit(0)
 	}
 
