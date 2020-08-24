@@ -17,8 +17,8 @@ var (
 )
 
 type kubeClient struct {
-	kcClientset		*kubernetes.Clientset
-	kcVerbose		bool
+	kcClientset *kubernetes.Clientset
+	kcVerbose   bool
 }
 
 func printContainers(pod *apiV1.Pod) {
@@ -122,6 +122,12 @@ func findPod(client *kubeClient, podname *string) {
 	fmt.Printf("couldn't find pod %s\n", *podname)
 }
 
+func usage() {
+	fmt.Printf("k8s-nodeview -version\n")
+	fmt.Printf("k8s-nodeview [-kubeconfig=<PATH>] -command=list [-nodename=<nodename>] [-verbose]\n")
+	fmt.Printf("k8s-nodeview [-kubeconfig=<PATH>] -command=findpod -podname=<podname>\n\n")
+	flag.Usage()
+}
 func main() {
 	var client kubeClient
 	var kubeconfig, cmd, nodename, podname *string
@@ -164,17 +170,21 @@ func main() {
 
 	switch *cmd {
 	case "":
-		fmt.Fprintf(os.Stderr, "no command specified\n")
+		fmt.Fprintf(os.Stderr, "Usage error: no command specified\n\n")
+		usage()
+		os.Exit(2)
 	case "list":
 		listNodes(&client, nodename)
 	case "findpod":
 		if *podname == "" {
 			fmt.Fprintf(os.Stderr, "podname not specified\n")
+			usage()
 			os.Exit(2)
 		}
 		findPod(&client, podname)
 	default:
 		fmt.Fprintf(os.Stderr, "Invalid command: %s\n", *cmd)
+		usage()
 		os.Exit(2)
 	}
 
