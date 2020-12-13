@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	BuildTime   string
-	GitRevision string
+	buildTime   string
+	gitRevision string
 )
 
 type kubeClient struct {
@@ -146,8 +146,8 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("Git Revision: %s\n", GitRevision)
-		fmt.Printf("Build Time:   %s\n", BuildTime)
+		fmt.Printf("Git Revision: %s\n", gitRevision)
+		fmt.Printf("Build Time:   %s\n", buildTime)
 		os.Exit(0)
 	}
 
